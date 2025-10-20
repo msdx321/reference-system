@@ -28,10 +28,11 @@ namespace nodes
 namespace rclcpp_system
 {
 
-class FusionBase : public rclcpp::Node
+template<typename Tag>
+class FusionImpl : public rclcpp::Node
 {
 public:
-  explicit FusionBase(const FusionSettings & settings)
+  explicit FusionImpl(const FusionSettings & settings)
   : Node(settings.node_name),
     number_crunch_limit_(settings.number_crunch_limit)
   {

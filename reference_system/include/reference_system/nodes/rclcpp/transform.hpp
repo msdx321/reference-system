@@ -28,10 +28,11 @@ namespace nodes
 namespace rclcpp_system
 {
 
-class TransformBase : public rclcpp::Node
+template<typename Tag>
+class TransformImpl : public rclcpp::Node
 {
 public:
-  explicit TransformBase(const TransformSettings & settings)
+  explicit TransformImpl(const TransformSettings & settings)
   : Node(settings.node_name),
     number_crunch_limit_(settings.number_crunch_limit)
   {

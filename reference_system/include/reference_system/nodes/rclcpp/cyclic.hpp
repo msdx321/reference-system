@@ -29,10 +29,11 @@ namespace nodes
 namespace rclcpp_system
 {
 
-class CyclicBase : public rclcpp::Node
+template<typename Tag>
+class CyclicImpl : public rclcpp::Node
 {
 public:
-  explicit CyclicBase(const CyclicSettings & settings)
+  explicit CyclicImpl(const CyclicSettings & settings)
   : Node(settings.node_name),
     number_crunch_limit_(settings.number_crunch_limit)
   {

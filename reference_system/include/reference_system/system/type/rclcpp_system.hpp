@@ -60,13 +60,20 @@ struct RclcppSystem
 {
   using NodeBaseType = rclcpp::Node;
 
-  // Base types (for backward compatibility)
-  using Command = nodes::rclcpp_system::CommandBase;
-  using Cyclic = nodes::rclcpp_system::CyclicBase;
-  using Fusion = nodes::rclcpp_system::FusionBase;
-  using Intersection = nodes::rclcpp_system::IntersectionBase;
-  using Sensor = nodes::rclcpp_system::SensorBase;
-  using Transform = nodes::rclcpp_system::TransformBase;
+  // Base types (for backward compatibility with tests)
+  struct GenericCommandTag {};
+  struct GenericCyclicTag {};
+  struct GenericFusionTag {};
+  struct GenericIntersectionTag {};
+  struct GenericSensorTag {};
+  struct GenericTransformTag {};
+
+  using Command = nodes::rclcpp_system::CommandImpl<GenericCommandTag>;
+  using Cyclic = nodes::rclcpp_system::CyclicImpl<GenericCyclicTag>;
+  using Fusion = nodes::rclcpp_system::FusionImpl<GenericFusionTag>;
+  using Intersection = nodes::rclcpp_system::IntersectionImpl<GenericIntersectionTag>;
+  using Sensor = nodes::rclcpp_system::SensorImpl<GenericSensorTag>;
+  using Transform = nodes::rclcpp_system::TransformImpl<GenericTransformTag>;
 
   // Specific sensor node types
   using FrontLidarDriver = nodes::rclcpp_system::FrontLidarDriver;

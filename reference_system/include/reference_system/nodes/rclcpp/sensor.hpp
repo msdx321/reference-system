@@ -27,10 +27,11 @@ namespace nodes
 namespace rclcpp_system
 {
 
-class SensorBase : public rclcpp::Node
+template<typename Tag>
+class SensorImpl : public rclcpp::Node
 {
 public:
-  explicit SensorBase(const SensorSettings & settings)
+  explicit SensorImpl(const SensorSettings & settings)
   : Node(settings.node_name)
   {
     publisher_ = this->create_publisher<message_t>(settings.topic_name, 1);
