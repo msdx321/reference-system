@@ -27,10 +27,10 @@ namespace nodes
 namespace rclcpp_system
 {
 
-class Command : public rclcpp::Node
+class CommandBase : public rclcpp::Node
 {
 public:
-  explicit Command(const CommandSettings & settings)
+  explicit CommandBase(const CommandSettings & settings)
   : Node(settings.node_name)
   {
     subscription_ = this->create_subscription<message_t>(

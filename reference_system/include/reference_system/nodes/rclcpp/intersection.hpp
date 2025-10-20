@@ -30,10 +30,10 @@ namespace nodes
 namespace rclcpp_system
 {
 
-class Intersection : public rclcpp::Node
+class IntersectionBase : public rclcpp::Node
 {
 public:
-  explicit Intersection(const IntersectionSettings & settings)
+  explicit IntersectionBase(const IntersectionSettings & settings)
   : Node(settings.node_name)
   {
     for (auto & connection : settings.connections) {

@@ -28,10 +28,10 @@ namespace nodes
 namespace rclcpp_system
 {
 
-class Transform : public rclcpp::Node
+class TransformBase : public rclcpp::Node
 {
 public:
-  explicit Transform(const TransformSettings & settings)
+  explicit TransformBase(const TransformSettings & settings)
   : Node(settings.node_name),
     number_crunch_limit_(settings.number_crunch_limit)
   {

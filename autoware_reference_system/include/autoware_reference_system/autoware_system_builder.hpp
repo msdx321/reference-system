@@ -49,37 +49,37 @@ auto create_autoware_nodes()
   // setup communication graph
   // sensor nodes
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Sensor>(
+    std::make_shared<typename SystemType::FrontLidarDriver>(
       nodes::SensorSettings{.node_name = "FrontLidarDriver",
         .topic_name = "FrontLidarDriver",
         .cycle_time = TimingConfig::FRONT_LIDAR_DRIVER}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Sensor>(
+    std::make_shared<typename SystemType::RearLidarDriver>(
       nodes::SensorSettings{.node_name = "RearLidarDriver",
         .topic_name = "RearLidarDriver",
         .cycle_time = TimingConfig::REAR_LIDAR_DRIVER}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Sensor>(
+    std::make_shared<typename SystemType::PointCloudMap>(
       nodes::SensorSettings{.node_name = "PointCloudMap",
         .topic_name = "PointCloudMap",
         .cycle_time = TimingConfig::POINT_CLOUD_MAP}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Sensor>(
+    std::make_shared<typename SystemType::Visualizer>(
       nodes::SensorSettings{.node_name = "Visualizer",
         .topic_name = "Visualizer",
         .cycle_time = TimingConfig::VISUALIZER}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Sensor>(
+    std::make_shared<typename SystemType::Lanelet2Map>(
       nodes::SensorSettings{.node_name = "Lanelet2Map",
         .topic_name = "Lanelet2Map",
         .cycle_time = TimingConfig::LANELET2MAP}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Sensor>(
+    std::make_shared<typename SystemType::EuclideanClusterSettings>(
       nodes::SensorSettings{
     .node_name = "EuclideanClusterSettings",
     .topic_name = "EuclideanClusterSettings",
@@ -87,7 +87,7 @@ auto create_autoware_nodes()
 
   // transform nodes
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Transform>(
+    std::make_shared<typename SystemType::PointsTransformerFront>(
       nodes::TransformSettings{
     .node_name = "PointsTransformerFront",
     .input_topic = "FrontLidarDriver",
@@ -95,7 +95,7 @@ auto create_autoware_nodes()
     .number_crunch_limit = TimingConfig::POINTS_TRANSFORMER_FRONT}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Transform>(
+    std::make_shared<typename SystemType::PointsTransformerRear>(
       nodes::TransformSettings{
     .node_name = "PointsTransformerRear",
     .input_topic = "RearLidarDriver",
@@ -103,7 +103,7 @@ auto create_autoware_nodes()
     .number_crunch_limit = TimingConfig::POINTS_TRANSFORMER_REAR}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Transform>(
+    std::make_shared<typename SystemType::VoxelGridDownsampler>(
       nodes::TransformSettings{
     .node_name = "VoxelGridDownsampler",
     .input_topic = "PointCloudFusion",
@@ -111,7 +111,7 @@ auto create_autoware_nodes()
     .number_crunch_limit = TimingConfig::VOXEL_GRID_DOWNSAMPLER}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Transform>(
+    std::make_shared<typename SystemType::PointCloudMapLoader>(
       nodes::TransformSettings{
     .node_name = "PointCloudMapLoader",
     .input_topic = "PointCloudMap",
@@ -119,7 +119,7 @@ auto create_autoware_nodes()
     .number_crunch_limit = TimingConfig::POINT_CLOUD_MAP_LOADER}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Transform>(
+    std::make_shared<typename SystemType::RayGroundFilter>(
       nodes::TransformSettings{
     .node_name = "RayGroundFilter",
     .input_topic = "PointCloudFusion",
@@ -127,7 +127,7 @@ auto create_autoware_nodes()
     .number_crunch_limit = TimingConfig::RAY_GROUND_FILTER}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Transform>(
+    std::make_shared<typename SystemType::ObjectCollisionEstimator>(
       nodes::TransformSettings{
     .node_name = "ObjectCollisionEstimator",
     .input_topic = "EuclideanClusterDetector",
@@ -135,7 +135,7 @@ auto create_autoware_nodes()
     .number_crunch_limit = TimingConfig::OBJECT_COLLISION_ESTIMATOR}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Transform>(
+    std::make_shared<typename SystemType::MPCController>(
       nodes::TransformSettings{
     .node_name = "MPCController",
     .input_topic = "BehaviorPlanner",
@@ -143,7 +143,7 @@ auto create_autoware_nodes()
     .number_crunch_limit = TimingConfig::MPC_CONTROLLER}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Transform>(
+    std::make_shared<typename SystemType::ParkingPlanner>(
       nodes::TransformSettings{
     .node_name = "ParkingPlanner",
     .input_topic = "Lanelet2MapLoader",
@@ -151,7 +151,7 @@ auto create_autoware_nodes()
     .number_crunch_limit = TimingConfig::PARKING_PLANNER}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Transform>(
+    std::make_shared<typename SystemType::LanePlanner>(
       nodes::TransformSettings{
     .node_name = "LanePlanner",
     .input_topic = "Lanelet2MapLoader",
@@ -160,7 +160,7 @@ auto create_autoware_nodes()
 
   // fusion nodes
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Fusion>(
+    std::make_shared<typename SystemType::PointCloudFusion>(
       nodes::FusionSettings{
     .node_name = "PointCloudFusion",
     .input_0 = "PointsTransformerFront",
@@ -169,7 +169,7 @@ auto create_autoware_nodes()
     .number_crunch_limit = TimingConfig::POINT_CLOUD_FUSION}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Fusion>(
+    std::make_shared<typename SystemType::NDTLocalizer>(
       nodes::FusionSettings{
     .node_name = "NDTLocalizer",
     .input_0 = "VoxelGridDownsampler",
@@ -178,7 +178,7 @@ auto create_autoware_nodes()
     .number_crunch_limit = TimingConfig::NDT_LOCALIZER}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Fusion>(
+    std::make_shared<typename SystemType::VehicleInterface>(
       nodes::FusionSettings{
     .node_name = "VehicleInterface",
     .input_0 = "MPCController",
@@ -187,7 +187,7 @@ auto create_autoware_nodes()
     .number_crunch_limit = TimingConfig::VEHICLE_INTERFACE}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Fusion>(
+    std::make_shared<typename SystemType::Lanelet2GlobalPlanner>(
       nodes::FusionSettings{
     .node_name = "Lanelet2GlobalPlanner",
     .input_0 = "Visualizer",
@@ -196,7 +196,7 @@ auto create_autoware_nodes()
     .number_crunch_limit = TimingConfig::LANELET_2_GLOBAL_PLANNER}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Fusion>(
+    std::make_shared<typename SystemType::Lanelet2MapLoader>(
       nodes::FusionSettings{
     .node_name = "Lanelet2MapLoader",
     .input_0 = "Lanelet2Map",
@@ -206,7 +206,7 @@ auto create_autoware_nodes()
 
   // cyclic node
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Cyclic>(
+    std::make_shared<typename SystemType::BehaviorPlanner>(
       nodes::CyclicSettings{
     .node_name = "BehaviorPlanner",
     .inputs = {"ObjectCollisionEstimator", "NDTLocalizer",
@@ -218,7 +218,7 @@ auto create_autoware_nodes()
 
   // intersection node
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Intersection>(
+    std::make_shared<typename SystemType::EuclideanClusterDetector>(
       nodes::IntersectionSettings{
     .node_name = "EuclideanClusterDetector",
     .connections = {
@@ -231,12 +231,12 @@ auto create_autoware_nodes()
 
   // command node
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Command>(
+    std::make_shared<typename SystemType::VehicleDBWSystem>(
       nodes::CommandSettings{
     .node_name = "VehicleDBWSystem", .input_topic = "VehicleInterface"}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Command>(
+    std::make_shared<typename SystemType::IntersectionOutput>(
       nodes::CommandSettings{.node_name = "IntersectionOutput",
         .input_topic = "EuclideanIntersection"}));
 #pragma GCC diagnostic pop

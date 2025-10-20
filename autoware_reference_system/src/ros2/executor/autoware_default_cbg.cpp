@@ -104,7 +104,7 @@ int main(int argc, char ** argv)
     fusion_exe.add_node(nodes.at(node));
   }
 
-  auto euclidean_node = std::dynamic_pointer_cast<RclcppSystem::Intersection>(
+  auto euclidean_node = std::dynamic_pointer_cast<RclcppSystem::EuclideanClusterDetector>(
     nodes.at("EuclideanClusterDetector"));
   assert(euclidean_node);
   fusion_exe.add_callback_group(
